@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Research Portal</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .nav-menu {
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            margin: 0 5px;
+            border-radius: 3px;
+            transition: background 0.3s;
+        }
+
+        .nav-menu a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Search Section */
+        .search-section {
+            background: white;
+            padding: 30px;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .search-box select,
+        .search-box input {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .search-box select {
+            flex: 0 0 150px;
+        }
+
+        .search-box input {
+            flex: 1;
+        }
+
+        .search-box button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .search-box button:hover {
+            background: #5568d3;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card.blue { border-top: 4px solid #3498db; }
+        .stat-card.green { border-top: 4px solid #2ecc71; }
+        .stat-card.orange { border-top: 4px solid #e74c3c; }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .stat-icon {
+            font-size: 24px;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 10px 0;
+        }
+
+        .stat-list {
+            list-style: none;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .stat-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .stat-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* Department Section */
+        .department-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .dept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .dept-item {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 3px solid #667eea;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .dept-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .dept-count {
+            float: right;
+            background: #667eea;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+
+        /* Faculty Profiles */
+        .faculty-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .faculty-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .faculty-header {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .faculty-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #667eea;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+        .faculty-info h3 {
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .faculty-info p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .faculty-stats {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .faculty-stats span {
+            background: #f8f9fa;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+
+        .footer-note {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="container">
+            <div class="logo-section">
+                <div class="logo-text">
+                    <i class="fa fa-graduation-cap"></i> College Research Portal
+                </div>
+                <div class="nav-menu">
+                    <a href="#"><i class="fa fa-home"></i> Home</a>
+                    <a href="#"><i class="fa fa-sign-in"></i> Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Section -->
+    <div class="container">
+        <div class="search-section">
+            <div class="search-box">
+                <select id="searchField">
+                    <option value="all">All Fields</option>
+                    <option value="name">Expert Name</option>
+                    <option value="dept">Department</option>
+                    <option value="designation">Designation</option>
+                </select>
+                <input type="text" id="searchInput" placeholder="Search for faculty, publications, research areas...">
+                <button onclick="searchData()"><i class="fa fa-search"></i> Search</button>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <!-- Faculty Card -->
+            <div class="stat-card blue">
+                <div class="stat-header">
+                    <i class="fa fa-users stat-icon"></i>
+                    <span>Faculty Members</span>
+                </div>
+                <div class="stat-number" id="facultyCount">267</div>
+                <ul class="stat-list">
+                    <li><span>Professors</span><span class="dept-count">39</span></li>
+                    <li><span>Associate Professors</span><span class="dept-count">59</span></li>
+                    <li><span>Assistant Professors</span><span class="dept-count">94</span></li>
+                    <li><span>Others</span><span class="dept-count">75</span></li>
+                </ul>
+            </div>
+
+            <!-- Publications Card -->
+            <div class="stat-card green">
+                <div class="stat-header">
+                    <i class="fa fa-file-text-o stat-icon"></i>
+                    <span>Publications</span>
+                </div>
+                <div class="stat-number" id="publicationCount">10148</div>
+                <ul class="stat-list">
+                    <li><span>Journal Articles</span><span class="dept-count">6075</span></li>
+                    <li><span>Conference Papers</span><span class="dept-count">2180</span></li>
+                    <li><span>Books/Chapters</span><span class="dept-count">764</span></li>
+                    <li><span>Patents</span><span class="dept-count">83</span></li>
+                </ul>
+            </div>
+
+            <!-- Citations Card -->
+            <div class="stat-card orange">
+                <div class="stat-header">
+                    <i class="fa fa-quote-left stat-icon"></i>
+                    <span>Research Impact</span>
+                </div>
+                <div class="stat-number" id="citationCount">136K+</div>
+                <ul class="stat-list">
+                    <li><span>Total Citations</span><span class="dept-count">136267</span></li>
+                    <li><span>Crossref Citations</span><span class="dept-count">110406</span></li>
+                    <li><span>Gold OA</span><span class="dept-count">908</span></li>
+                    <li><span>Green OA</span><span class="dept-count">111</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Departments -->
+        <div class="department-section">
+            <h2 class="section-title"><i class="fa fa-building"></i> Departments</h2>
+            <div class="dept-grid">
+                <div class="dept-item">Computer Science & Engineering<span class="dept-count">30</span></div>
+                <div class="dept-item">Electronics & Communication<span class="dept-count">25</span></div>
+                <div class="dept-item">Mechanical Engineering<span class="dept-count">19</span></div>
+                <div class="dept-item">Civil Engineering<span class="dept-count">19</span></div>
+                <div class="dept-item">Industrial & Production Engineering<span class="dept-count">19</span></div>
+                <div class="dept-item">Chemical Engineering<span class="dept-count">18</span></div>
+                <div class="dept-item">Instrumentation & Control<span class="dept-count">18</span></div>
+                <div class="dept-item">Textile Technology<span class="dept-count">17</span></div>
+                <div class="dept-item">Mathematics<span class="dept-count">16</span></div>
+                <div class="dept-item">Information Technology<span class="dept-count">13</span></div>
+            </div>
+        </div>
+
+        <!-- Top Faculty -->
+        <div class="department-section">
+            <h2 class="section-title"><i class="fa fa-star"></i> Featured Researchers</h2>
+            <div class="faculty-section">
+                <div class="faculty-card">
+                    <div class="faculty-header">
+                        <div class="faculty-image"><i class="fa fa-user"></i></div>
+                        <div class="faculty-info">
+                            <h3>Dr. Suneel Dutt</h3>
+                            <p>Assistant Professor</p>
+                            <p style="color: #667eea;">Department of Chemistry</p>
+                        </div>
+                    </div>
+                    <div class="faculty-stats">
+                        <span><i class="fa fa-file-text-o"></i> 537 Publications</span>
+                        <span><i class="fa fa-quote-left"></i> 31,022 Citations</span>
+                    </div>
+                </div>
+
+                <div class="faculty-card">
+                    <div class="faculty-header">
+                        <div class="faculty-image"><i class="fa fa-user"></i></div>
+                        <div class="faculty-info">
+                            <h3>Prof. Binod Kumar Kanaujia</h3>
+                            <p>Director</p>
+                            <p style="color: #667eea;">Electronics & Communication</p>
+                        </div>
+                    </div>
+                    <div class="faculty-stats">
+                        <span><i class="fa fa-file-text-o"></i> 480 Publications</span>
+                        <span><i class="fa fa-quote-left"></i> 8,180 Citations</span>
+                    </div>
+                </div>
+
+                <div class="faculty-card">
+                    <div class="faculty-header">
+                        <div class="faculty-image"><i class="fa fa-user"></i></div>
+                        <div class="faculty-info">
+                            <h3>Prof. Balbir Singh Kaith</h3>
+                            <p>Professor</p>
+                            <p style="color: #667eea;">Department of Chemistry</p>
+                        </div>
+                    </div>
+                    <div class="faculty-stats">
+                        <span><i class="fa fa-file-text-o"></i> 370 Publications</span>
+                        <span><i class="fa fa-quote-left"></i> 9,409 Citations</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container">
+            <p>&copy; 2024 College Research Portal | Student Project</p>
+            <p class="footer-note">Created as an academic assignment | Data is for demonstration purposes</p>
+        </div>
+    </div>
+
+    <script>
+        // Counter animation
+        function animateCounter(id, start, end, duration) {
+            const element = document.getElementById(id);
+            const range = end - start;
+            const increment = range / (duration / 16);
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= end) {
+                    element.textContent = end.toLocaleString();
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current).toLocaleString();
+                }
+            }, 16);
+        }
+
+        // Search functionality
+        function searchData() {
+            const searchInput = document.getElementById('searchInput').value;
+            const searchField = document.getElementById('searchField').value;
+            
+            if (searchInput.trim() === '') {
+                alert('Please enter a search term');
+                return;
+            }
+            
+            alert(`Searching for "${searchInput}" in ${searchField}...\n\nNote: This is a demo version. Full search functionality would be implemented in the complete system.`);
+        }
+
+        // Allow Enter key to search
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchData();
+            }
+        });
+
+        // Initialize counters on page load
+        window.onload = function() {
+            animateCounter('facultyCount', 0, 267, 2000);
+            animateCounter('publicationCount', 0, 10148, 2000);
+        };
+    </script>
+</body>
+</html>
