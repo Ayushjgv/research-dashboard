@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Profile - NIT Jalandhar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Profile specific styles from main CSS */
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            padding: 50px 0;
+            margin-bottom: 30px;
+            border-radius: 0 0 30px 30px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+        }
+
+        .profile-image-large {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 5px solid white;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            background: linear-gradient(135deg, var(--accent-teal), var(--primary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+        }
+
+        .profile-stats {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--primary-blue);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            background: var(--light-gray);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .research-chart {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .mini-chart {
+            height: 200px;
+            margin-bottom: 20px;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--primary-blue);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+            border-left: 4px solid var(--accent-teal);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -37px;
+            top: 25px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px var(--primary-blue);
+        }
+
+        /* Import main CSS variables */
+        :root {
+            --primary-blue: #1A949B;
+            --secondary-blue: #3498DB;
+            --accent-teal: #1ABC9C;
+            --dark-blue: #2C3E50;
+            --light-gray: #F7F7F7;
+            --white: #FFFFFF;
+            --text-dark: #2C3E50;
+            --text-light: #7F8C8D;
+            --border-light: #ECF0F1;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--dark-blue) 0%, #34495E 100%);
+        }
+
+        .stats-card {
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .profile-btn {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: var(--white);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="https://nitj.irins.org/assets/institute/1003/images/logo.png" alt="NIT Jalandhar" height="40">
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/"><i class="fas fa-home"></i> Home</a>
+                <a class="nav-link" href="/faculty"><i class="fas fa-users"></i> All Faculty</a>
+                <a class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i> Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Content -->
+    <div class="container" id="profileContent">
+        <div class="loading">
+            <i class="fas fa-spinner fa-spin fa-2x"></i>
+            <p>Loading faculty profile...</p>
+        </div>
+    </div>
+
+    <script>
+        // Get faculty ID from URL
+        const facultyId = window.location.pathname.split('/').pop();
+        
+        // API Base URL
+        const API_BASE = '/api';
+        
+        // Load faculty profile
+        async function loadFacultyProfile() {
+            try {
+                const response = await fetch(`${API_BASE}/faculty/${facultyId}`);
+                const data = await response.json();
+                
+                // Generate publication years for charts
+                const currentYear = new Date().getFullYear();
+                const years = Array.from({length: 10}, (_, i) => currentYear - 9 + i);
+                const publicationsByYear = years.map(year => 
+                    data.publications.filter(pub => pub.year === year).length
+                );
+                const citationsByYear = years.map(year => 
+                    data.publications.filter(pub => pub.year === year)
+                        .reduce((sum, pub) => sum + pub.citations, 0)
+                );
+
+                const profileHtml = `
+                    <!-- Profile Header -->
+                    <div class="profile-header">
+                        <div class="container">
+                            <div class="row align-items-center">
+                                <div class="col-md-3 text-center">
+                                    <div class="profile-image-large">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                </div>
+                                <div class="col-md-9">
+                                    <h1 class="display-5 fw-bold">${data.faculty.name}</h1>
+                                    <h4 class="mb-2">${data.faculty.designation}</h4>
+                                    <h5 class="mb-3">${data.faculty.department}</h5>
+                                    <div class="d-flex flex-wrap gap-3">
+                                        <span><i class="fas fa-envelope me-2"></i> ${data.faculty.email}</span>
+                                        <span><i class="fas fa-phone me-2"></i> ${data.faculty.phone}</span>
+                                        <span><i class="fas fa-map-marker-alt me-2"></i> ${data.faculty.office_address}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container">
+                        <div class="row">
+                            <!-- Left Column - Stats and Basic Info -->
+                            <div class="col-md-4">
+                                <!-- Research Stats -->
+                                <div class="profile-stats">
+                                    <h4 class="mb-4"><i class="fas fa-chart-line me-2"></i>Research Statistics</h4>
+                                    <div class="row g-3">
+                                        <div class="col-6">
+                                            <div class="stat-item">
+                                                <span class="stat-number">${data.faculty.publications}</span>
+                                                <span class="stat-label">Publications</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="stat-item">
+                                                <span class="stat-number">${data.faculty.citations}</span>
+                                                <span class="stat-label">Citations</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="stat-item">
+                                                <span class="stat-number">${data.faculty.h_index}</span>
+                                                <span class="stat-label">h-index</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="stat-item">
+                                                <span class="stat-number">${data.faculty.projects}</span>
+                                                <span class="stat-label">Projects</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Research Impact Chart -->
+                                <div class="research-chart">
+                                    <h5 class="mb-3">Research Impact</h5>
+                                    <div class="mini-chart">
+                                        <canvas id="impactChart"></canvas>
+                                    </div>
+                                </div>
+
+                                <!-- Publication Trends -->
+                                <div class="research-chart">
+                                    <h5 class="mb-3">Publication Trends</h5>
+                                    <div class="mini-chart">
+                                        <canvas id="trendsChart"></canvas>
+                                    </div>
+                                </div>
+
+                                <!-- Contact Information -->
+                                <div class="stats-card">
+                                    <div class="stats-header">
+                                        <i class="fas fa-address-card"></i> Contact Information
+                                    </div>
+                                    <div class="stats-body">
+                                        <p><strong>Email:</strong><br>${data.faculty.email}</p>
+                                        <p><strong>Phone:</strong><br>${data.faculty.phone}</p>
+                                        <p><strong>Office:</strong><br>${data.faculty.office_address}</p>
+                                        ${data.faculty.website ? `<p><strong>Website:</strong><br><a href="${data.faculty.website}" target="_blank">${data.faculty.website}</a></p>` : ''}
+                                    </div>
+                                </div>
+
+                                <!-- Research Interests -->
+                                <div class="stats-card">
+                                    <div class="stats-header">
+                                        <i class="fas fa-flask"></i> Research Interests
+                                    </div>
+                                    <div class="stats-body">
+                                        <div class="d-flex flex-wrap gap-2">
+                                            ${data.faculty.research_interests.map(interest => 
+                                                `<span class="badge bg-primary">${interest}</span>`
+                                            ).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right Column - Detailed Information -->
+                            <div class="col-md-8">
+                                <!-- Biography -->
+                                <div class="stats-card">
+                                    <div class="stats-header">
+                                        <i class="fas fa-user"></i> Biography
+                                    </div>
+                                    <div class="stats-body">
+                                        <p class="lead">${data.faculty.bio}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Education & Experience Timeline -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="stats-card">
+                                            <div class="stats-header">
+                                                <i class="fas fa-graduation-cap"></i> Education
+                                            </div>
+                                            <div class="stats-body">
+                                                <div class="timeline">
+                                                    ${data.faculty.education.map(edu => `
+                                                        <div class="timeline-item">
+                                                            <h6 class="mb-1">${edu.degree}</h6>
+                                                            <p class="mb-1 text-muted">${edu.institution}</p>
+                                                            <small class="text-primary">${edu.year}</small>
+                                                        </div>
+                                                    `).join('')}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="stats-card">
+                                            <div class="stats-header">
+                                                <i class="fas fa-briefcase"></i> Experience
+                                            </div>
+                                            <div class="stats-body">
+                                                <div class="timeline">
+                                                    ${data.faculty.experience.map(exp => `
+                                                        <div class="timeline-item">
+                                                            <h6 class="mb-1">${exp.position}</h6>
+                                                            <p class="mb-1 text-muted">${exp.organization}</p>
+                                                            <small class="text-primary">${exp.duration}</small>
+                                                        </div>
+                                                    `).join('')}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Teaching Subjects -->
+                                <div class="stats-card">
+                                    <div class="stats-header">
+                                        <i class="fas fa-book"></i> Teaching Subjects
+                                    </div>
+                                    <div class="stats-body">
+                                        <div class="row">
+                                            ${data.faculty.teaching_subjects.map(subject => `
+                                                <div class="col-md-6 mb-2">
+                                                    <i class="fas fa-check text-success me-2"></i>${subject}
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Awards -->
+                                ${data.faculty.awards && data.faculty.awards.length > 0 ? `
+                                <div class="stats-card">
+                                    <div class="stats-header">
+                                        <i class="fas fa-award"></i> Awards & Honors
+                                    </div>
+                                    <div class="stats-body">
+                                        <div class="timeline">
+                                            ${data.faculty.awards.map(award => `
+                                                <div class="timeline-item">
+                                                    <i class="fas fa-trophy text-warning me-2"></i>${award}
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                                ` : ''}
+
+                                <!-- Recent Publications -->
+                                <div class="stats-card">
+                                    <div class="stats-header">
+                                        <i class="fas fa-file-alt"></i> Recent Publications
+                                    </div>
+                                    <div class="stats-body">
+                                        ${data.publications.slice(0, 5).map(pub => `
+                                            <div class="publication-item mb-3 p-3 border rounded">
+                                                <h6 class="mb-2">${pub.title}</h6>
+                                                <p class="mb-1 text-muted"><strong>Authors:</strong> ${pub.authors.join(', ')}</p>
+                                                <p class="mb-1 text-muted"><strong>Journal:</strong> ${pub.journal}, ${pub.year}</p>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span class="badge bg-secondary">${pub.type}</span>
+                                                    <span class="text-success"><i class="fas fa-quote-left me-1"></i>${pub.citations} Citations</span>
+                                                </div>
+                                            </div>
+                                        `).join('')}
+                                        ${data.publications.length > 5 ? `
+                                            <div class="text-center mt-3">
+                                                <a href="#" class="profile-btn">View All Publications</a>
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                </div>
+
+                                <!-- Projects -->
+                                <div class="stats-card">
+                                    <div class="stats-header">
+                                        <i class="fas fa-project-diagram"></i> Research Projects
+                                    </div>
+                                    <div class="stats-body">
+                                        ${data.projects.map(project => `
+                                            <div class="project-item mb-3 p-3 border rounded">
+                                                <h6 class="mb-2">${project.title}</h6>
+                                                <div class="row text-sm">
+                                                    <div class="col-md-6">
+                                                        <strong>Funding Agency:</strong> ${project.funding_agency}
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <strong>Amount:</strong> ₹${project.amount.toLocaleString()}
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <strong>Duration:</strong> ${project.duration}
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <strong>Status:</strong> 
+                                                        <span class="badge ${project.status === 'Completed' ? 'bg-success' : project.status === 'Ongoing' ? 'bg-warning' : 'bg-info'}">
+                                                            ${project.status}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <p class="mt-2 mb-0">${project.description}</p>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('profileContent').innerHTML = profileHtml;
+                
+                // Initialize charts
+                initializeCharts(years, publicationsByYear, citationsByYear, data);
+                
+            } catch (error) {
+                console.error('Error loading faculty profile:', error);
+                document.getElementById('profileContent').innerHTML = `
+                    <div class="container mt-5">
+                        <div class="alert alert-danger">
+                            <h4>Error Loading Profile</h4>
+                            <p>Unable to load faculty profile. Please try again later.</p>
+                            <a href="/faculty" class="btn btn-primary">Back to Faculty List</a>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize charts
+        function initializeCharts(years, publicationsByYear, citationsByYear, data) {
+            // Impact Chart (Publications vs Citations)
+            const impactCtx = document.getElementById('impactChart').getContext('2d');
+            new Chart(impactCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Publications', 'Citations', 'h-index'],
+                    datasets: [{
+                        data: [data.faculty.publications, data.faculty.citations, data.faculty.h_index],
+                        backgroundColor: ['#3498DB', '#2ECC71', '#9B59B6'],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // Trends Chart
+            const trendsCtx = document.getElementById('trendsChart').getContext('2d');
+            new Chart(trendsCtx, {
+                type: 'line',
+                data: {
+                    labels: years,
+                    datasets: [
+                        {
+                            label: 'Publications',
+                            data: publicationsByYear,
+                            borderColor: '#3498DB',
+                            backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Citations',
+                            data: citationsByYear,
+                            borderColor: '#2ECC71',
+                            backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Load profile when page loads
+        document.addEventListener('DOMContentLoaded', loadFacultyProfile);
+    </script>
+</body>
+</html>

@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIT Jalandhar - Faculty Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* ===== ENHANCED CSS VARIABLES ===== */
+        :root {
+            --primary-blue: #1A949B;
+            --secondary-blue: #3498DB;
+            --accent-teal: #1ABC9C;
+            --dark-blue: #2C3E50;
+            --light-gray: #F7F7F7;
+            --white: #FFFFFF;
+            --text-dark: #2C3E50;
+            --text-light: #7F8C8D;
+            --border-light: #ECF0F1;
+            --success-green: #27AE60;
+            --warning-orange: #F39C12;
+            --danger-red: #E74C3C;
+        }
+
+        /* ===== GLOBAL STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ===== ENHANCED NAVBAR ===== */
+        .navbar {
+            background: linear-gradient(135deg, var(--dark-blue) 0%, #34495E 100%);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 0.8rem 0;
+            border-bottom: 3px solid var(--primary-blue);
+        }
+
+        .navbar-brand img {
+            height: 50px;
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand img:hover {
+            transform: scale(1.05);
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--white) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            margin: 0 0.2rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .navbar-nav .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+
+        .navbar-nav .nav-link.active {
+            background: var(--primary-blue);
+            box-shadow: 0 2px 8px rgba(26, 148, 155, 0.3);
+        }
+
+        .navbar-nav .nav-link i {
+            margin-right: 8px;
+            font-size: 1.1em;
+        }
+
+        .dropdown-menu {
+            background: var(--white);
+            border: none;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            padding: 0.5rem;
+        }
+
+        .dropdown-item {
+            padding: 0.7rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-item:hover {
+            background: var(--primary-blue);
+            color: var(--white);
+            transform: translateX(5px);
+        }
+
+        /* ===== ENHANCED SEARCH BOX ===== */
+        .search-box {
+            margin: 30px 0;
+            padding: 20px;
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-light);
+        }
+
+        .search-box .input-group {
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .search-box .form-select {
+            border: none;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: var(--white);
+            font-weight: 500;
+            border-right: 2px solid var(--white);
+        }
+
+        .search-box .form-control {
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+        }
+
+        .search-box .form-control:focus {
+            box-shadow: none;
+            background: var(--light-gray);
+        }
+
+        .search-box .btn {
+            background: linear-gradient(135deg, var(--accent-teal), #16A085);
+            border: none;
+            padding: 12px 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .search-box .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(22, 160, 133, 0.4);
+        }
+
+        /* ===== ENHANCED STATS CARDS ===== */
+        .stats-section {
+            margin: 30px 0;
+        }
+
+        .service-block-v3 {
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            border: none;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-block-v3::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .service-block-v3:hover::before {
+            left: 100%;
+        }
+
+        .service-block-v3:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .service-block-red { 
+            background: linear-gradient(135deg, #E74C3C, #C0392B);
+            color: var(--white);
+        }
+
+        .service-block-blue { 
+            background: linear-gradient(135deg, #3498DB, #2980B9);
+            color: var(--white);
+        }
+
+        .service-block-sea { 
+            background: linear-gradient(135deg, #1ABC9C, #16A085);
+            color: var(--white);
+        }
+
+        .service-block-v3 i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .service-heading {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .counter {
+            font-size: 2.8rem;
+            font-weight: 700;
+            line-height: 1;
+            margin: 10px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .faculty-box-ul, .reseacher-box-ul {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0 0 0;
+        }
+
+        .faculty-box-ul li, .reseacher-box-ul li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .faculty-box-ul li:hover, .reseacher-box-ul li:hover {
+            background: rgba(255,255,255,0.1);
+            padding-left: 10px;
+            border-radius: 5px;
+        }
+
+        .faculty-box-ul li:last-child, .reseacher-box-ul li:last-child {
+            border-bottom: none;
+        }
+
+        .counter-home {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* ===== ENHANCED PROGRESS BARS ===== */
+        .progress {
+            height: 25px;
+            border-radius: 12px;
+            margin: 8px 0;
+            background: rgba(255,255,255,0.2);
+            overflow: hidden;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: width 1.5s ease-in-out;
+        }
+
+        /* ===== ENHANCED CONTENT CARDS ===== */
+        .stats-card {
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+
+        .stats-card:hover {
+            box-shadow: 0 10px 35px rgba(0,0,0,0.15);
+            transform: translateY(-3px);
+        }
+
+        .stats-header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: var(--white);
+            padding: 18px 25px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .stats-header i {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .stats-body {
+            padding: 25px;
+            background: var(--white);
+        }
+
+        /* ===== ENHANCED FACULTY CARDS ===== */
+        .faculty-card {
+            background: var(--white);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            padding: 20px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .faculty-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary-blue), var(--accent-teal));
+            transition: width 0.3s ease;
+        }
+
+        .faculty-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .faculty-card:hover::before {
+            width: 6px;
+        }
+
+        .faculty-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-teal));
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            border: 3px solid var(--white);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .faculty-card:hover .faculty-img {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .faculty-img i {
+            font-size: 2rem;
+        }
+
+        /* ===== ENHANCED BUTTONS ===== */
+        .profile-btn {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: var(--white);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(26, 148, 155, 0.3);
+        }
+
+        .profile-btn:hover {
+            background: linear-gradient(135deg, var(--secondary-blue), var(--primary-blue));
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26, 148, 155, 0.4);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            border: none;
+            border-radius: 8px;
+            padding: 10px 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26, 148, 155, 0.4);
+        }
+
+        /* ===== ENHANCED TABS ===== */
+        .nav-tabs {
+            border-bottom: 2px solid var(--border-light);
+            margin-bottom: 20px;
+        }
+
+        .nav-tabs .nav-link {
+            border: none;
+            color: var(--text-light);
+            font-weight: 500;
+            padding: 12px 25px;
+            margin-right: 5px;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tabs .nav-link:hover {
+            background: var(--light-gray);
+            color: var(--primary-blue);
+        }
+
+        .nav-tabs .nav-link.active {
+            background: var(--primary-blue);
+            color: var(--white);
+            box-shadow: 0 -2px 10px rgba(26, 148, 155, 0.3);
+        }
+
+        /* ===== ENHANCED CHARTS ===== */
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+
+        .mini-chart {
+            height: 200px;
+            margin-bottom: 20px;
+        }
+
+        /* ===== ENHANCED LISTS ===== */
+        .department-list {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .department-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .department-list::-webkit-scrollbar-track {
+            background: var(--light-gray);
+            border-radius: 3px;
+        }
+
+        .department-list::-webkit-scrollbar-thumb {
+            background: var(--primary-blue);
+            border-radius: 3px;
+        }
+
+        .list-group-item {
+            border: 1px solid var(--border-light);
+            padding: 15px 20px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .list-group-item:hover {
+            background: var(--light-gray);
+            transform: translateX(5px);
+            border-color: var(--primary-blue);
+        }
+
+        .list-group-item a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .list-group-item:hover a {
+            color: var(--primary-blue);
+        }
+
+        .badge {
+            font-size: 0.8rem;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        /* ===== ENHANCED PROFILE PAGE STYLES ===== */
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            padding: 50px 0;
+            margin-bottom: 30px;
+            border-radius: 0 0 30px 30px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+        }
+
+        .profile-image-large {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 5px solid white;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            background: linear-gradient(135deg, var(--accent-teal), var(--primary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+        }
+
+        .profile-stats {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--primary-blue);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            background: var(--light-gray);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .research-chart {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--primary-blue);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+            border-left: 4px solid var(--accent-teal);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -37px;
+            top: 25px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px var(--primary-blue);
+        }
+
+        /* ===== AUTH PAGES STYLES ===== */
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            padding: 20px;
+        }
+
+        .auth-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            overflow: hidden;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .auth-header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .auth-body {
+            padding: 30px;
+        }
+
+        .auth-form .form-control {
+            border: 2px solid var(--border-light);
+            border-radius: 10px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .auth-form .form-control:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(26, 148, 155, 0.1);
+        }
+
+        .auth-btn {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26, 148, 155, 0.4);
+        }
+
+        .auth-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .auth-links a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== ENHANCED FOOTER ===== */
+        .footer {
+            background: linear-gradient(135deg, var(--dark-blue), #34495E);
+            color: var(--white);
+            padding: 40px 0 20px;
+            margin-top: 50px;
+            border-top: 3px solid var(--primary-blue);
+        }
+
+        .footer img {
+            filter: brightness(0) invert(1);
+            margin-bottom: 15px;
+        }
+
+        .footer h5 {
+            color: var(--accent-teal);
+            margin-bottom: 15px;
+        }
+
+        .footer p {
+            color: #BDC3C7;
+            line-height: 1.6;
+        }
+
+        /* ===== LOADING ANIMATIONS ===== */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-light);
+        }
+
+        .loading i {
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+        }
+
+        .spinner-border {
+            color: var(--primary-blue);
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 768px) {
+            .navbar-nav .nav-link {
+                margin: 0.2rem 0;
+                text-align: center;
+            }
+            
+            .search-box {
+                margin: 20px 0;
+                padding: 15px;
+            }
+            
+            .service-block-v3 {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .counter {
+                font-size: 2.2rem;
+            }
+            
+            .faculty-card {
+                padding: 15px;
+            }
+            
+            .faculty-img {
+                width: 60px;
+                height: 60px;
+                margin-right: 15px;
+            }
+            
+            .chart-container {
+                height: 300px;
+                padding: 15px;
+            }
+
+            .profile-image-large {
+                width: 120px;
+                height: 120px;
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .stats-header {
+                padding: 15px 20px;
+                font-size: 1rem;
+            }
+            
+            .stats-body {
+                padding: 20px;
+            }
+            
+            .service-block-v3 {
+                padding: 15px;
+            }
+            
+            .counter {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* ===== CUSTOM UTILITIES ===== */
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .shadow-custom {
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+        }
+
+        .border-gradient {
+            border: 2px solid;
+            border-image: linear-gradient(135deg, var(--primary-blue), var(--accent-teal)) 1;
+        }
+
+        /* ===== ACCESSIBILITY ===== */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="https://nitj.irins.org/assets/institute/1003/images/logo.png" alt="NIT Jalandhar" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjUwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxNTAiIGhlaWdodD0iNTAiIGZpbGw9IiMzNDk4REIiLz48dGV4dCB4PSI3NSIgeT0iMjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5OSVQgSmFsYW5kaGFyPC90ZXh0Pjwvc3ZnPg=='">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/faculty"><i class="fas fa-users"></i> All Faculty</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register"><i class="fas fa-user-plus"></i> Register</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <!-- Search Box -->
+        <div class="row search-box fade-in-up">
+            <div class="col-md-8 mx-auto">
+                <form id="searchForm" action="/search" method="GET">
+                    <div class="input-group">
+                        <select class="form-select" name="field" id="searchField" style="max-width: 150px;">
+                            <option value="all" selected>All</option>
+                            <option value="tname">Expert Name</option>
+                            <option value="tdesignation">Designation</option>
+                            <option value="tdepartment">Department</option>
+                            <option value="texpertise">Expertise</option>
+                        </select>
+                        <input type="text" class="form-control" id="searchInput" name="q" placeholder="Search for..." value="">
+                        <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Statistics Section -->
+        <div class="row stats-section" id="statsSection">
+            <div class="col-md-4 fade-in-up" style="animation-delay: 0.1s;">
+                <div class="service-block-v3 service-block-red">
+                    <div class="service-bg"></div>
+                    <i class="fas fa-users"></i> 
+                    <span class="service-heading">Faculty / Scientist</span> 
+                    <span class="counter" id="total_f" style="line-height: 1;display: block;font-size:190%;color:white">267</span>
+                    <div class="clearfix margin-bottom-10"></div>
+                    <div class="panel-body no-padding">
+                        <ul class="list-unstyled faculty-box-ul">
+                            <li><a href="javascript:void(0)" style="color:white;text-decoration: none !important" class="faculty_designation" data-name="Professor">Professor<span class="counter">39</span></a></li>
+                            <li><a href="javascript:void(0)" style="color:white;text-decoration: none !important" class="faculty_designation" data-name="Associate Professor">Associate Professor<span class="counter">59</span></a></li>
+                            <li><a href="javascript:void(0)" style="color:white;text-decoration: none !important" class="faculty_designation" data-name="Assistant Professor">Assistant Professor<span class="counter">94</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 fade-in-up" style="animation-delay: 0.2s;">
+                <div class="service-block-v3 service-block-blue">
+                    <div class="service-bg"></div>
+                    <div class="pull-left" style="font-size:100%;color:white">
+                        <i class="fas fa-file-alt"></i> 
+                        <span class="service-heading">Publications</span>
+                        <span class="counter" id="total_p" style="line-height: 1;display: block;font-size:190%;">10148</span>
+                    </div>
+                    <div class="pull-right" style="font-size:100%; margin-right:-6%;width:40%;">
+                        <span class="service-heading">Patents</span>
+                        <span class="counter" id="total_patent" style="line-height: 1;display: block;font-size:190%; color: #fff">83</span>
+                        <i class="fas fa-snowflake-o pull-right" aria-hidden="true" style="margin-top:-40%;"></i>
+                    </div>
+                    <div style="width:100%;float:left;padding-left: 20px; margin-top: 10px;">
+                        <div class="service-block-v3" style="width: 25%; float: left; padding: 5px 0px;">
+                            <div style="background: #FFD700; width: 15px; height: 15px; border: 1px solid #FFFFFF; float: left; margin-top: 4px;"></div>
+                            <span class="counter-home" style="font-size: 15px; margin-left: 6px;">908</span><br>
+                            <span style="float: left; font-size:11px; color:#fff;">Gold OA</span>
+                        </div>
+                        <div class="service-block-v3" style="width: 25%; float: left; padding: 5px 0px;">
+                            <div style="background: #CD7F32; width: 15px; height: 15px; border: 1px solid #FFFFFF; float: left; margin-top: 4px;"></div>
+                            <span class="counter-home" style="font-size: 15px; margin-left: 6px;">157</span><br>
+                            <span style="float: left; font-size:11px; color:#fff;">Bronze OA</span>
+                        </div>
+                        <div class="service-block-v3" style="width: 25%; float: left; padding: 5px 0px;">
+                            <div style="background: #228B22; width: 15px; height: 15px; border: 1px solid #FFFFFF; float: left; margin-top: 4px;"></div>
+                            <span class="counter-home" style="font-size: 15px; margin-left: 6px;">111</span><br>
+                            <span style="float: left; font-size:11px; color:#fff;">Green OA</span>
+                        </div>
+                    </div>
+                    <div class="clearfix margin-bottom-10"></div>
+                    <div class="panel-body no-padding">
+                        <ul class="list-unstyled reseacher-box-ul">
+                            <li>Journal Articles<span class="counter-home">6075</span></li>
+                            <li>Conference / In Proceedings<span class="counter-home">2180</span></li>
+                            <li>Books / Chapters<span class="counter-home">764</span></li>
+                            <li>Other<span class="counter-home">1129</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 fade-in-up" style="animation-delay: 0.3s;">
+                <div class="service-block-v3 service-block-sea">
+                    <div class="service-bg"></div>
+                    <i class="fas fa-signal"></i> 
+                    <span class="service-heading">Resources Impact</span>
+                    <div class="clearfix margin-bottom-10"></div>
+                    <div style="">
+                        <div class="service-block-v3" style="width: 50%; float: left;">
+                            <i class="fas fa-quote-left" style="color:#fff; background-color: #106370; border-radius: 100px !important; font-size: 20px; width: 38px; height: 38px; text-align: center; margin-right:10px; margin-top: 3px;line-height: 30px; padding: 0px;margin-top:10px"></i>
+                            <span class="counter" style="color: #fff;font-size: 18px;margin-top: 10px;">136267</span>
+                            <h6 class="mb0" style="color:#fff;">Citations</h6>
+                        </div>
+                        <div class="service-block-v3" style="width: 50%; float: left;">
+                            <div style="float:left; width: 40px;">
+                                <h6>
+                                    <i style="line-height: 1; margin-right: 5px;">
+                                        <img style="vertical-align:unset; width: 30px; height: 30px;" src="https://nitj.irins.org/assets/images/crossref_new.png" onerror="this.style.display='none'" />
+                                    </i>
+                                </h6>
+                            </div>
+                            <div style="float: left;">
+                                <span class="counter" style="color: #fff;font-size: 18px;margin-top: 10px;">110406</span>
+                                <h6 class="mb0" style="color:#fff;">Citations</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Departments & Top Faculty -->
+        <div class="row mt-4">
+            <div class="col-md-4 fade-in-up" style="animation-delay: 0.4s;">
+                <div class="stats-card">
+                    <div class="stats-header">
+                        <i class="fas fa-building"></i> Departments
+                    </div>
+                    <div class="stats-body department-list">
+                        <ul class="list-group" id="departmentsList">
+                            <li class="list-group-item">Loading departments...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-8 fade-in-up" style="animation-delay: 0.5s;">
+                <div class="stats-card">
+                    <div class="stats-header">
+                        <i class="fas fa-trophy"></i> Top Faculty Profiles
+                    </div>
+                    <div class="stats-body">
+                        <ul class="nav nav-tabs" id="facultyTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="publications-tab" data-bs-toggle="tab" data-bs-target="#publications" type="button">
+                                    <i class="fas fa-file-alt"></i> By Publications
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="citations-tab" data-bs-toggle="tab" data-bs-target="#citations" type="button">
+                                    <i class="fas fa-quote-left"></i> By Citations
+                                </button>
+                            </li>
+                        </ul>
+                        <div class="tab-content mt-3" id="facultyTabsContent">
+                            <div class="tab-pane fade show active" id="publications" role="tabpanel">
+                                <div class="loading">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    <p>Loading faculty data...</p>
+                                </div>
+                            </div>
+                            
+                            <div class="tab-pane fade" id="citations" role="tabpanel">
+                                <div class="loading">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    <p>Loading faculty data...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Research Chart -->
+        <div class="row mt-4 fade-in-up" style="animation-delay: 0.6s;">
+            <div class="col-12">
+                <div class="stats-card">
+                    <div class="stats-header">
+                        <i class="fas fa-chart-bar"></i> Research Performance Overview
+                    </div>
+                    <div class="stats-body">
+                        <div class="chart-container">
+                            <canvas id="researchChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Publications -->
+        <div class="row mt-4 fade-in-up" style="animation-delay: 0.7s;">
+            <div class="col-12">
+                <div class="stats-card">
+                    <div class="stats-header">
+                        <i class="fas fa-newspaper"></i> Recent Publications
+                    </div>
+                    <div class="stats-body">
+                        <div id="recentPublications">
+                            <div class="loading">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <p>Loading recent publications...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="https://nitj.irins.org/assets/institute/1003/images/logo_footer.png" alt="NIT Jalandhar" height="50" onerror="this.style.display='none'">
+                    <p class="mt-2">Dr B R Ambedkar National Institute of Technology Jalandhar</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <h5>Powered by Faculty Portal System</h5>
+                    <p>Educational Project Version</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // API Base URL
+        const API_BASE = '/api';
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStats();
+            loadDepartments();
+            loadTopFaculty();
+            loadChartData();
+            loadRecentPublications();
+            
+            // Add event listeners for faculty designation clicks
+            document.querySelectorAll('.faculty_designation').forEach(item => {
+                item.addEventListener('click', function() {
+                    const designation = this.getAttribute('data-name');
+                    window.location.href = `/faculty?designation=${encodeURIComponent(designation)}`;
+                });
+            });
+
+            // Add scroll animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all fade-in elements
+            document.querySelectorAll('.fade-in-up').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        });
+
+        // Load statistics
+        async function loadStats() {
+            try {
+                const response = await fetch(`${API_BASE}/stats`);
+                const data = await response.json();
+                
+                // Animate counters
+                animateCounter('total_f', data.totalFaculty);
+                animateCounter('total_p', data.totalPublications);
+                animateCounter('total_patent', 83); // Mock patents count
+                
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Load departments
+        async function loadDepartments() {
+            try {
+                const response = await fetch(`${API_BASE}/departments`);
+                const departments = await response.json();
+                
+                const departmentsHtml = departments.map(dept => `
+                    <li class="list-group-item">
+                        <a href="/department/${encodeURIComponent(dept.name)}" style="text-decoration: none; color: inherit;">
+                            ${dept.name}
+                        </a>
+                        <span class="badge bg-primary rounded-pill">${dept.faculty_count}</span>
+                    </li>
+                `).join('');
+                
+                document.getElementById('departmentsList').innerHTML = departmentsHtml;
+            } catch (error) {
+                console.error('Error loading departments:', error);
+            }
+        }
+
+        // Load top faculty
+        async function loadTopFaculty() {
+            try {
+                const response = await fetch(`${API_BASE}/faculty?limit=5`);
+                const data = await response.json();
+                
+                const facultyByPublications = data.faculty.slice(0, 5);
+                const facultyByCitations = [...data.faculty].sort((a, b) => b.citations - a.citations).slice(0, 5);
+                
+                // Render faculty by publications
+                const publicationsHtml = facultyByPublications.map(faculty => `
+                    <div class="faculty-card">
+                        <div class="d-flex">
+                            <div class="faculty-img">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h5>${faculty.name}</h5>
+                                <p class="text-muted mb-2">${faculty.designation} - ${faculty.department}</p>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <span><i class="fas fa-file-alt text-primary"></i> ${faculty.publications} Publications</span>
+                                    <span><i class="fas fa-quote-left text-success"></i> ${faculty.citations} Citations</span>
+                                </div>
+                                <a href="/faculty/${faculty.id}" class="profile-btn">View Profile</a>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                document.querySelector('#publications .loading').outerHTML = publicationsHtml;
+                
+                // Render faculty by citations
+                const citationsHtml = facultyByCitations.map(faculty => `
+                    <div class="faculty-card">
+                        <div class="d-flex">
+                            <div class="faculty-img">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h5>${faculty.name}</h5>
+                                <p class="text-muted mb-2">${faculty.designation} - ${faculty.department}</p>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <span><i class="fas fa-file-alt text-primary"></i> ${faculty.publications} Publications</span>
+                                    <span><i class="fas fa-quote-left text-success"></i> ${faculty.citations} Citations</span>
+                                </div>
+                                <a href="/faculty/${faculty.id}" class="profile-btn">View Profile</a>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                document.querySelector('#citations .loading').outerHTML = citationsHtml;
+                
+            } catch (error) {
+                console.error('Error loading faculty:', error);
+            }
+        }
+
+        // Load chart data
+        async function loadChartData() {
+            try {
+                const response = await fetch(`${API_BASE}/chart-data`);
+                const data = await response.json();
+                
+                const ctx = document.getElementById('researchChart').getContext('2d');
+                
+                // Prepare chart data
+                const departments = data.departmentData.map(dept => dept.name);
+                const facultyCounts = data.departmentData.map(dept => dept.faculty_count);
+                const publicationsCounts = data.departmentData.map(dept => dept.publications_count);
+                
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: departments,
+                        datasets: [
+                            {
+                                label: 'Faculty Count',
+                                data: facultyCounts,
+                                backgroundColor: 'rgba(54, 162, 235, 0.8)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Publications Count',
+                                data: publicationsCounts,
+                                backgroundColor: 'rgba(255, 99, 132, 0.8)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Faculty and Publications by Department'
+                            }
+                        }
+                    }
+                });
+                
+            } catch (error) {
+                console.error('Error loading chart data:', error);
+                document.getElementById('researchChart').innerHTML = '<p class="text-muted text-center">Chart data not available</p>';
+            }
+        }
+
+        // Load recent publications
+        async function loadRecentPublications() {
+            try {
+                const response = await fetch(`${API_BASE}/publications/top`);
+                const publications = await response.json();
+                
+                const publicationsHtml = publications.map(pub => `
+                    <div class="faculty-card">
+                        <h6><i class="fas fa-file-alt text-primary"></i> ${pub.title}</h6>
+                        <p class="text-muted mb-1"><strong>Authors:</strong> ${pub.authors.join(', ')}</p>
+                        <p class="text-muted mb-1"><strong>Journal:</strong> ${pub.journal} (${pub.year})</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-secondary">${pub.type}</span>
+                            <span><i class="fas fa-quote-left text-success"></i> ${pub.citations} Citations</span>
+                        </div>
+                    </div>
+                `).join('');
+                
+                document.getElementById('recentPublications').innerHTML = publicationsHtml;
+                
+            } catch (error) {
+                console.error('Error loading publications:', error);
+            }
+        }
+
+        // Enhanced counter animation
+        function animateCounter(elementId, target) {
+            const element = document.getElementById(elementId);
+            let current = 0;
+            const increment = target / 100;
+            const duration = 2000; // 2 seconds
+            const stepTime = duration / 100;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target.toLocaleString();
+                    clearInterval(timer);
+                    // Add celebration effect
+                    element.classList.add('pulse');
+                    setTimeout(() => element.classList.remove('pulse'), 1000);
+                } else {
+                    element.textContent = Math.floor(current).toLocaleString();
+                }
+            }, stepTime);
+        }
+    </script>
+</body>
+</html>

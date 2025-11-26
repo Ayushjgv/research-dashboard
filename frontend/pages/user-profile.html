@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - NIT Jalandhar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            padding: 50px 0;
+            margin-bottom: 30px;
+            border-radius: 0 0 30px 30px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+        }
+
+        .profile-image-large {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid white;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            object-fit: cover;
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--primary-blue);
+        }
+
+        .edit-btn {
+            background: linear-gradient(135deg, var(--accent-teal), #16A085);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .edit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(22, 160, 133, 0.4);
+        }
+
+        .nav-tabs .nav-link.active {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+        }
+
+        .research-interest-tag {
+            background: var(--light-gray);
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin: 3px;
+            display: inline-block;
+            font-size: 0.9rem;
+        }
+
+        :root {
+            --primary-blue: #1A949B;
+            --secondary-blue: #3498DB;
+            --accent-teal: #1ABC9C;
+            --light-gray: #F7F7F7;
+        }
+
+        body {
+            background: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, #2C3E50, #34495E);">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="https://nitj.irins.org/assets/institute/1003/images/logo.png" alt="NIT Jalandhar" height="40">
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/"><i class="fas fa-home"></i> Home</a>
+                <a class="nav-link" href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a class="nav-link active" href="/profile"><i class="fas fa-user"></i> Profile</a>
+                <a class="nav-link" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Content -->
+    <div class="container" id="profileContent">
+        <div class="loading text-center py-5">
+            <i class="fas fa-spinner fa-spin fa-2x"></i>
+            <p>Loading your profile...</p>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editProfileForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">First Name</label>
+                                    <input type="text" class="form-control" id="editFirstName" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" id="editLastName" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Phone</label>
+                            <input type="tel" class="form-control" id="editPhone">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Bio</label>
+                            <textarea class="form-control" id="editBio" rows="4" placeholder="Tell us about yourself..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Research Interests</label>
+                            <div id="researchInterestsContainer">
+                                <!-- Interests will be added here dynamically -->
+                            </div>
+                            <div class="input-group mt-2">
+                                <input type="text" class="form-control" id="newInterest" placeholder="Add research interest">
+                                <button type="button" class="btn btn-outline-primary" onclick="addInterest()">Add</button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Qualifications</label>
+                            <div id="qualificationsContainer">
+                                <!-- Qualifications will be added here dynamically -->
+                            </div>
+                            <div class="input-group mt-2">
+                                <input type="text" class="form-control" id="newQualification" placeholder="Add qualification">
+                                <button type="button" class="btn btn-outline-primary" onclick="addQualification()">Add</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="updateProfile()">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentUser = null;
+        let researchInterests = [];
+        let qualifications = [];
+
+        // Check authentication
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/login';
+                return;
+            }
+            loadUserProfile();
+        }
+
+        // Load user profile
+        async function loadUserProfile() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/auth/me', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to load profile');
+                }
+
+                const data = await response.json();
+                currentUser = data.user;
+                researchInterests = currentUser.researchInterests || [];
+                qualifications = currentUser.qualifications || [];
+                
+                displayUserProfile();
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                localStorage.removeItem('token');
+                window.location.href = '/login';
+            }
+        }
+
+        // Display user profile
+        function displayUserProfile() {
+            const profileHtml = `
+                <!-- Profile Header -->
+                <div class="profile-header">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-md-2 text-center">
+                                <img src="${currentUser.profileImage}" alt="Profile" class="profile-image-large">
+                            </div>
+                            <div class="col-md-8">
+                                <h1 class="display-5 fw-bold">${currentUser.firstName} ${currentUser.lastName}</h1>
+                                <h4 class="mb-2">${currentUser.designation}</h4>
+                                <h5 class="mb-3">${currentUser.department}</h5>
+                                <p class="mb-0"><i class="fas fa-envelope me-2"></i>${currentUser.email}</p>
+                            </div>
+                            <div class="col-md-2 text-end">
+                                <button class="edit-btn" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                                    <i class="fas fa-edit me-2"></i>Edit Profile
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row">
+                        <!-- Left Column -->
+                        <div class="col-md-4">
+                            <!-- Personal Info -->
+                            <div class="stats-card">
+                                <h4><i class="fas fa-info-circle me-2"></i>Personal Information</h4>
+                                <div class="mb-3">
+                                    <strong>Email:</strong><br>${currentUser.email}
+                                </div>
+                                ${currentUser.phone ? `
+                                <div class="mb-3">
+                                    <strong>Phone:</strong><br>${currentUser.phone}
+                                </div>
+                                ` : ''}
+                                <div class="mb-3">
+                                    <strong>Member Since:</strong><br>
+                                    ${new Date(currentUser.joinDate).toLocaleDateString()}
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Role:</strong><br>
+                                    <span class="badge bg-primary">${currentUser.role}</span>
+                                </div>
+                            </div>
+
+                            <!-- Research Interests -->
+                            <div class="stats-card">
+                                <h4><i class="fas fa-flask me-2"></i>Research Interests</h4>
+                                <div id="currentInterests">
+                                    ${researchInterests.length > 0 ? 
+                                        researchInterests.map(interest => 
+                                            `<span class="research-interest-tag">${interest}</span>`
+                                        ).join('') :
+                                        '<p class="text-muted">No research interests added yet.</p>'
+                                    }
+                                </div>
+                            </div>
+
+                            <!-- Qualifications -->
+                            <div class="stats-card">
+                                <h4><i class="fas fa-graduation-cap me-2"></i>Qualifications</h4>
+                                <div id="currentQualifications">
+                                    ${qualifications.length > 0 ? 
+                                        qualifications.map(qual => 
+                                            `<div class="mb-2"><i class="fas fa-certificate text-warning me-2"></i>${qual}</div>`
+                                        ).join('') :
+                                        '<p class="text-muted">No qualifications added yet.</p>'
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="col-md-8">
+                            <!-- Bio -->
+                            <div class="stats-card">
+                                <h4><i class="fas fa-user me-2"></i>About Me</h4>
+                                <p class="lead">${currentUser.bio || 'No bio added yet. Click "Edit Profile" to add information about yourself.'}</p>
+                            </div>
+
+                            <!-- Quick Stats -->
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="stats-card text-center">
+                                        <div class="stat-number text-primary">0</div>
+                                        <div class="stat-label">Publications</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="stats-card text-center">
+                                        <div class="stat-number text-success">0</div>
+                                        <div class="stat-label">Projects</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="stats-card text-center">
+                                        <div class="stat-number text-info">0</div>
+                                        <div class="stat-label">Students</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Recent Activity -->
+                            <div class="stats-card">
+                                <h4><i class="fas fa-history me-2"></i>Recent Activity</h4>
+                                <div class="timeline">
+                                    <div class="timeline-item">
+                                        <i class="fas fa-user-plus text-success me-2"></i>
+                                        <strong>Account Created</strong>
+                                        <small class="text-muted">${new Date(currentUser.joinDate).toLocaleDateString()}</small>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <i class="fas fa-edit text-primary me-2"></i>
+                                        <strong>Profile Updated</strong>
+                                        <small class="text-muted">Just now</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('profileContent').innerHTML = profileHtml;
+            populateEditForm();
+        }
+
+        // Populate edit form
+        function populateEditForm() {
+            document.getElementById('editFirstName').value = currentUser.firstName;
+            document.getElementById('editLastName').value = currentUser.lastName;
+            document.getElementById('editPhone').value = currentUser.phone || '';
+            document.getElementById('editBio').value = currentUser.bio || '';
+            
+            updateInterestsDisplay();
+            updateQualificationsDisplay();
+        }
+
+        // Update interests display
+        function updateInterestsDisplay() {
+            const container = document.getElementById('researchInterestsContainer');
+            container.innerHTML = researchInterests.map(interest => `
+                <span class="research-interest-tag">
+                    ${interest}
+                    <i class="fas fa-times ms-2" onclick="removeInterest('${interest}')" style="cursor: pointer;"></i>
+                </span>
+            `).join('');
+        }
+
+        // Update qualifications display
+        function updateQualificationsDisplay() {
+            const container = document.getElementById('qualificationsContainer');
+            container.innerHTML = qualifications.map(qual => `
+                <div class="d-flex justify-content-between align-items-center mb-2 p-2 border rounded">
+                    <span>${qual}</span>
+                    <i class="fas fa-times text-danger" onclick="removeQualification('${qual}')" style="cursor: pointer;"></i>
+                </div>
+            `).join('');
+        }
+
+        // Add research interest
+        function addInterest() {
+            const input = document.getElementById('newInterest');
+            const interest = input.value.trim();
+            
+            if (interest && !researchInterests.includes(interest)) {
+                researchInterests.push(interest);
+                updateInterestsDisplay();
+                input.value = '';
+            }
+        }
+
+        // Remove research interest
+        function removeInterest(interest) {
+            researchInterests = researchInterests.filter(i => i !== interest);
+            updateInterestsDisplay();
+        }
+
+        // Add qualification
+        function addQualification() {
+            const input = document.getElementById('newQualification');
+            const qualification = input.value.trim();
+            
+            if (qualification && !qualifications.includes(qualification)) {
+                qualifications.push(qualification);
+                updateQualificationsDisplay();
+                input.value = '';
+            }
+        }
+
+        // Remove qualification
+        function removeQualification(qualification) {
+            qualifications = qualifications.filter(q => q !== qualification);
+            updateQualificationsDisplay();
+        }
+
+        // Update profile
+        async function updateProfile() {
+            try {
+                const token = localStorage.getItem('token');
+                const updatedData = {
+                    firstName: document.getElementById('editFirstName').value,
+                    lastName: document.getElementById('editLastName').value,
+                    phone: document.getElementById('editPhone').value,
+                    bio: document.getElementById('editBio').value,
+                    researchInterests: researchInterests,
+                    qualifications: qualifications
+                };
+
+                const response = await fetch('/api/auth/profile', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(updatedData)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to update profile');
+                }
+
+                const data = await response.json();
+                currentUser = data.user;
+                
+                // Close modal and refresh display
+                const modal = bootstrap.Modal.getInstance(document.getElementById('editProfileModal'));
+                modal.hide();
+                
+                displayUserProfile();
+                
+                alert('Profile updated successfully!');
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                alert('Failed to update profile. Please try again.');
+            }
+        }
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('token');
+            window.location.href = '/';
+        });
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', checkAuth);
+    </script>
+</body>
+</html>

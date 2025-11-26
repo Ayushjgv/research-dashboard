@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Faculty - NIT Jalandhar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        .faculty-card {
+            transition: transform 0.2s;
+        }
+        .faculty-card:hover {
+            transform: translateY(-5px);
+        }
+        .profile-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">NIT Jalandhar</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1>All Faculty Members</h1>
+        <div class="row" id="facultyList">
+            <div class="col-12 text-center">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function loadFaculty() {
+            const response = await fetch('/api/faculty?limit=1000');
+            const data = await response.json();
+            
+            const facultyHtml = data.faculty.map(faculty => `
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card faculty-card h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-start">
+                                <div class="profile-image me-3">
+                                    <i class="fas fa-user fa-2x text-muted"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h5 class="card-title">${faculty.name}</h5>
+                                    <p class="card-text mb-1">${faculty.designation}</p>
+                                    <p class="card-text mb-1 text-muted">${faculty.department}</p>
+                                    <div class="d-flex justify-content-between small mb-2">
+                                        <span><i class="fas fa-file-alt"></i> ${faculty.publications}</span>
+                                        <span><i class="fas fa-quote-left"></i> ${faculty.citations}</span>
+                                        <span><i class="fas fa-star"></i> ${faculty.h_index}</span>
+                                    </div>
+                                    <a href="/faculty/${faculty.id}" class="btn btn-primary btn-sm">View Profile</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('facultyList').innerHTML = facultyHtml;
+        }
+
+        loadFaculty();
+    </script>
+</body>
+</html>

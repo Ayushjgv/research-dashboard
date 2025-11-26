@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIT Jalandhar - Faculty Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        :root {
+            --primary-color: #1A949B;
+            --secondary-color: #3498DB;
+            --accent-color: #1ABC9C;
+            --dark-color: #2C3E50;
+            --light-color: #F7F7F7;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-color);
+            color: #333;
+        }
+        
+        .navbar {
+            background-color: var(--dark-color);
+        }
+        
+        .navbar-brand img {
+            height: 50px;
+        }
+        
+        .stats-card {
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .stats-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+        }
+        
+        .stats-body {
+            background-color: white;
+            padding: 20px;
+        }
+        
+        .faculty-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .faculty-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        
+        .counter {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .department-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 20px 0;
+            margin-top: 30px;
+        }
+        
+        .search-box {
+            margin: 20px 0;
+        }
+        
+        .tab-content {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="https://nitj.irins.org/assets/institute/1003/images/logo.png" alt="NIT Jalandhar">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="loginDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Nodal Officer</a></li>
+                            <li><a class="dropdown-item" href="#">Faculty</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <!-- Search Box -->
+        <div class="row search-box">
+            <div class="col-md-8 mx-auto">
+                <div class="input-group">
+                    <select class="form-select" style="max-width: 150px;">
+                        <option selected>All</option>
+                        <option>Expert Name</option>
+                        <option>Department</option>
+                        <option>Expertise</option>
+                    </select>
+                    <input type="text" class="form-control" placeholder="Search faculty, publications...">
+                    <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <div class="stats-header">
+                        <i class="fas fa-users"></i> Faculty & Scientists
+                    </div>
+                    <div class="stats-body text-center">
+                        <div class="counter">267</div>
+                        <div class="mt-3">
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Professor
+                                    <span class="badge bg-primary rounded-pill">39</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Associate Professor
+                                    <span class="badge bg-primary rounded-pill">59</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Assistant Professor
+                                    <span class="badge bg-primary rounded-pill">94</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <div class="stats-header">
+                        <i class="fas fa-file-alt"></i> Scholarly Resources
+                    </div>
+                    <div class="stats-body text-center">
+                        <div class="counter">10,148</div>
+                        <div class="mt-3">
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Journal Articles
+                                    <span class="badge bg-primary rounded-pill">6,075</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Conference Papers
+                                    <span class="badge bg-primary rounded-pill">2,180</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Books & Chapters
+                                    <span class="badge bg-primary rounded-pill">764</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <div class="stats-header">
+                        <i class="fas fa-chart-line"></i> Research Impact
+                    </div>
+                    <div class="stats-body">
+                        <div class="row text-center">
+                            <div class="col-6">
+                                <div class="counter">136,267</div>
+                                <p>Total Citations</p>
+                            </div>
+                            <div class="col-6">
+                                <div class="counter">83</div>
+                                <p>Patents</p>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <div class="progress mb-2">
+                                <div class="progress-bar bg-warning" style="width: 70%">Gold OA: 908</div>
+                            </div>
+                            <div class="progress mb-2">
+                                <div class="progress-bar bg-success" style="width: 20%">Green OA: 111</div>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-brown" style="width: 10%">Bronze OA: 157</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Departments & Top Faculty -->
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <div class="stats-header" style="background-color: var(--accent-color);">
+                        <i class="fas fa-building"></i> Departments
+                    </div>
+                    <div class="stats-body department-list">
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Computer Science & Engineering
+                                <span class="badge bg-primary rounded-pill">30</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Electronics & Communication
+                                <span class="badge bg-primary rounded-pill">25</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Mechanical Engineering
+                                <span class="badge bg-primary rounded-pill">19</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Civil Engineering
+                                <span class="badge bg-primary rounded-pill">19</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Chemical Engineering
+                                <span class="badge bg-primary rounded-pill">18</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Instrumentation & Control
+                                <span class="badge bg-primary rounded-pill">18</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Industrial & Production
+                                <span class="badge bg-primary rounded-pill">19</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-8">
+                <div class="stats-card">
+                    <div class="stats-header">
+                        <i class="fas fa-trophy"></i> Top Faculty Profiles
+                    </div>
+                    <div class="stats-body">
+                        <ul class="nav nav-tabs" id="facultyTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="publications-tab" data-bs-toggle="tab" data-bs-target="#publications" type="button">
+                                    <i class="fas fa-file-alt"></i> By Publications
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="citations-tab" data-bs-toggle="tab" data-bs-target="#citations" type="button">
+                                    <i class="fas fa-quote-left"></i> By Citations
+                                </button>
+                            </li>
+                        </ul>
+                        <div class="tab-content mt-3" id="facultyTabsContent">
+                            <div class="tab-pane fade show active" id="publications" role="tabpanel">
+                                <!-- Faculty by Publications -->
+                                <div class="faculty-card d-flex">
+                                    <img src="https://nitj.irins.org/profile_images/90123.png" class="faculty-img" alt="Dr. Suneel Dutt">
+                                    <div class="flex-grow-1">
+                                        <h5>Dr. Suneel Dutt</h5>
+                                        <p class="text-muted">Assistant Professor</p>
+                                        <div class="d-flex justify-content-between">
+                                            <span><i class="fas fa-file-alt text-primary"></i> 537 Publications</span>
+                                            <span><i class="fas fa-quote-left text-success"></i> 31,022 Citations</span>
+                                        </div>
+                                        <button class="btn btn-sm btn-primary mt-2">View Profile</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="faculty-card d-flex">
+                                    <img src="https://nitj.irins.org/profile_images/60657.jpg" class="faculty-img" alt="Prof. Binod Kumar Kanaujia">
+                                    <div class="flex-grow-1">
+                                        <h5>Prof. Binod Kumar Kanaujia</h5>
+                                        <p class="text-muted">Director</p>
+                                        <div class="d-flex justify-content-between">
+                                            <span><i class="fas fa-file-alt text-primary"></i> 480 Publications</span>
+                                            <span><i class="fas fa-quote-left text-success"></i> 8,180 Citations</span>
+                                        </div>
+                                        <button class="btn btn-sm btn-primary mt-2">View Profile</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="tab-pane fade" id="citations" role="tabpanel">
+                                <!-- Faculty by Citations -->
+                                <div class="faculty-card d-flex">
+                                    <img src="https://nitj.irins.org/profile_images/90123.png" class="faculty-img" alt="Dr. Suneel Dutt">
+                                    <div class="flex-grow-1">
+                                        <h5>Dr. Suneel Dutt</h5>
+                                        <p class="text-muted">Assistant Professor</p>
+                                        <div class="d-flex justify-content-between">
+                                            <span><i class="fas fa-file-alt text-primary"></i> 537 Publications</span>
+                                            <span><i class="fas fa-quote-left text-success"></i> 31,022 Citations</span>
+                                        </div>
+                                        <button class="btn btn-sm btn-primary mt-2">View Profile</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="faculty-card d-flex">
+                                    <img src="https://nitj.irins.org/profile_images/101403.jpg" class="faculty-img" alt="Dr. Vijay Kumar">
+                                    <div class="flex-grow-1">
+                                        <h5>Dr. Vijay Kumar</h5>
+                                        <p class="text-muted">Associate Professor</p>
+                                        <div class="d-flex justify-content-between">
+                                            <span><i class="fas fa-file-alt text-primary"></i> 261 Publications</span>
+                                            <span><i class="fas fa-quote-left text-success"></i> 14,146 Citations</span>
+                                        </div>
+                                        <button class="btn btn-sm btn-primary mt-2">View Profile</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Research Chart -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="stats-card">
+                    <div class="stats-header">
+                        <i class="fas fa-chart-bar"></i> Research Performance Overview
+                    </div>
+                    <div class="stats-body">
+                        <div id="researchChart" style="height: 300px; background-color: #f8f9fa; border-radius: 5px; display: flex; align-items: center; justify-content: center;">
+                            <p class="text-muted">Research performance chart would be displayed here</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="https://nitj.irins.org/assets/institute/1003/images/logo_footer.png" alt="NIT Jalandhar" height="50">
+                    <p class="mt-2">Dr B R Ambedkar National Institute of Technology Jalandhar</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <h5>Powered by</h5>
+                    <img src="https://nitj.irins.org/assets/images/irins_logo.png" alt="IRINS" height="40" class="ms-3">
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Simple counter animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const counters = document.querySelectorAll('.counter');
+            
+            counters.forEach(counter => {
+                const target = +counter.innerText;
+                let count = 0;
+                const increment = target / 100;
+                
+                const updateCount = () => {
+                    if (count < target) {
+                        count += increment;
+                        counter.innerText = Math.ceil(count);
+                        setTimeout(updateCount, 20);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+                
+                updateCount();
+            });
+        });
+    </script>
+</body>
+</html>

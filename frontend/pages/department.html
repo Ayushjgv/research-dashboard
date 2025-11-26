@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Department - NIT Jalandhar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">NIT Jalandhar</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4" id="departmentContent">
+        <div class="text-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const departmentName = decodeURIComponent(window.location.pathname.split('/').pop());
+
+        async function loadDepartment() {
+            const response = await fetch(`/api/departments/${encodeURIComponent(departmentName)}`);
+            const data = await response.json();
+            
+            const departmentHtml = `
+                <h1>${data.department.name}</h1>
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h3>${data.department.faculty_count}</h3>
+                                <p>Faculty Members</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h3>${data.publications_count}</h3>
+                                <p>Publications</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h3>${data.citations_count}</h3>
+                                <p>Citations</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h3>${data.department.h_index_avg}</h3>
+                                <p>Avg h-index</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h4>About the Department</h4>
+                        <p>${data.department.description}</p>
+                        <p><strong>Head of Department:</strong> ${data.department.head_of_department}</p>
+                        <p><strong>Established:</strong> ${data.department.established_year}</p>
+                    </div>
+                </div>
+
+                <h3>Faculty Members</h3>
+                <div class="row">
+                    ${data.faculty.map(faculty => `
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5>${faculty.name}</h5>
+                                    <p class="mb-1">${faculty.designation}</p>
+                                    <div class="d-flex justify-content-between small mb-2">
+                                        <span>Publications: ${faculty.publications}</span>
+                                        <span>Citations: ${faculty.citations}</span>
+                                        <span>h-index: ${faculty.h_index}</span>
+                                    </div>
+                                    <a href="/faculty/${faculty.id}" class="btn btn-primary btn-sm">View Profile</a>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            document.getElementById('departmentContent').innerHTML = departmentHtml;
+        }
+
+        loadDepartment();
+    </script>
+</body>
+</html>
